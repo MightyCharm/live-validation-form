@@ -1,3 +1,9 @@
 {
-  "conventionalCommits.scopes": ["debug", "linting", "readme", "form"]
+  "conventionalCommits.scopes": [
+    "debug",
+    "linting",
+    "readme",
+    "form",
+    "validation"
+  ]
 }
