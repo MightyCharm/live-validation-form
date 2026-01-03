@@ -11,15 +11,15 @@
         <div class="container-email">
           <label class="label-email" for="email">
             <span>Enter email:</span>
-            <input id="email" type="email" required />
+            <input id="email" class="input-email" type="email" required />
           </label>
-          <span id="error-email" class="span-error">Error email</span>
+          <span id="error-email" class="span-error"></span>
         </div>
 
         <div class="container-country">
           <label class="label-country" for="country">
             <span class="span-description">Select Country:</span>
-            <select id="country" required>
+            <select id="country" class="select-country" required>
               <option value="">Select Country</option>
               <option value="germany">Germany</option>
               <option value="france">France</option>
@@ -35,7 +35,12 @@
         <div class="container-postal-code">
           <label class="label-postal-code" for="postal-code">
             <span class="span-description">Enter Postal Code:</span>
-            <input id="postal-code" type="text" required />
+            <input
+              id="postal-code"
+              class="input-postal-code"
+              type="text"
+              required
+            />
           </label>
           <span id="error-postal-code" class="span-error"
             >Error postal code</span
@@ -45,19 +50,24 @@
         <div class="container-password">
           <label class="label-password" for="password">
             <span class="span-description">Enter password:</span>
-            <input id="password" type="password" />
+            <input id="password" class="input-password" type="password" />
           </label>
           <span id="error-password" class="span-error">Error password</span>
-          <label class="label-password-confirm" for="confirm-password">
+          <label class="label-password-confirm" for="password-confirm">
             <span class="span-description">Confirm password:</span>
-            <input id="confirm-password" type="password" required />
+            <input
+              id="password-confirm"
+              class="input-password-confirm"
+              type="password"
+              required
+            />
           </label>
           <span id="error-confirm-password" class="span-error"
             >Error confirm password</span
           >
         </div>
 
-        <button id="btn-submit" class="btn-submit" type="submit">Submit</button>
+        <button id="submit" class="btn-submit" type="submit">Submit</button>
       </form>
     </div>
   </body>
