@@ -30,7 +30,7 @@ const numbers = /\d/;
 const passwordChecks = {
   hasNumber: false,
   hasSign: false,
-  passwordMatch: false,
+  passwordsMatch: false,
 };
 
 inputEmail.addEventListener("input", () => {
@@ -69,8 +69,18 @@ inputPassword.addEventListener("input", () => {
   validateInput(inputPassword);
 });
 
+inputPassword.addEventListener("blur", () => {
+  console.log("blur password");
+  validateInput(inputPassword);
+});
+
 inputPasswordConfirm.addEventListener("input", () => {
   console.log("input password confirm");
+  validateInput(inputPasswordConfirm);
+});
+
+inputPasswordConfirm.addEventListener("blur", () => {
+  console.log("blur password confirm");
   validateInput(inputPasswordConfirm);
 });
 
@@ -164,12 +174,21 @@ const validateInput = (input) => {
   }
 
   if (input.id === "password-confirm") {
-    if (!input.validity.valid) {
-      spanErrorPasswordConfirm.textContent = "Enter valid password";
+    const firstPasswordValue = inputPassword.value;
+    if (input.value !== firstPasswordValue) {
+      passwordChecks.passwordsMatch = false;
+      spanErrorPasswordConfirm.textContent = "Password don't match.";
       spanErrorPasswordConfirm.classList.add("show");
     } else {
-      spanErrorPasswordConfirm.textContent = "";
-      spanErrorPasswordConfirm.classList.remove("show");
+      passwordChecks.passwordsMatch = true;
+      if (!input.validity.valid) {
+        spanErrorPasswordConfirm.textContent = "Enter valid password";
+        spanErrorPasswordConfirm.classList.add("show");
+      } else {
+        spanErrorPasswordConfirm.textContent = "";
+        spanErrorPasswordConfirm.classList.remove("show");
+      }
     }
+    console.log(passwordChecks);
   }
 };
