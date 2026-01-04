@@ -9,6 +9,10 @@ const inputPasswordConfirm = document.getElementById("password-confirm");
 const spanErrorEmail = document.getElementById("error-email");
 const spanErrorCountry = document.getElementById("error-country");
 const spanErrorPostal = document.getElementById("error-postal-code");
+const spanErrorPassword = document.getElementById("error-password");
+const spanErrorPasswordConfirm = document.getElementById(
+  "error-confirm-password",
+);
 
 const regexPostal = {
   germany: /^\d{5}$/,
@@ -18,6 +22,15 @@ const regexPostal = {
   uk: /^[A-Z]{1,2}\d[A-Z\d]?\s?\d[A-Z]{2}$/,
   netherlands: /^\d{4} ?[A-Z]{2}$/,
   sweden: /^S-\d{3} ?\d{2}$/,
+};
+
+const specialSigns = /[!@#$%^&*]/;
+const numbers = /\d/;
+
+const passwordChecks = {
+  hasNumber: false,
+  hasSign: false,
+  passwordMatch: false,
 };
 
 inputEmail.addEventListener("input", () => {
@@ -53,15 +66,15 @@ inputPostalCode.addEventListener("blur", () => {
 
 inputPassword.addEventListener("input", () => {
   console.log("input password");
+  validateInput(inputPassword);
 });
 
 inputPasswordConfirm.addEventListener("input", () => {
   console.log("input password confirm");
+  validateInput(inputPasswordConfirm);
 });
 
 const validateInput = (input) => {
-  console.log("validateInput");
-
   if (input.id === "email") {
     if (!input.validity.valid) {
       if (input.value.length === 0) {
@@ -116,6 +129,47 @@ const validateInput = (input) => {
       console.log("right");
       spanErrorPostal.textContent = "";
       spanErrorPostal.classList.remove("show");
+    }
+    return;
+  }
+
+  if (input.id === "password") {
+    if (!input.validity.valid) {
+      spanErrorPassword.textContent = "Enter valid password.";
+      spanErrorPassword.classList.add("show");
+    } else {
+      if (!numbers.test(input.value) && !specialSigns.test(input.value)) {
+        spanErrorPassword.textContent = "Add a number and special sign.";
+        spanErrorPassword.classList.add("show");
+        passwordChecks.hasNumber = false;
+        passwordChecks.hasSign = false;
+      } else if (!numbers.test(input.value) && specialSigns.test(input.value)) {
+        spanErrorPassword.textContent = "Add a number.";
+        spanErrorPassword.classList.add("show");
+        passwordChecks.hasNumber = false;
+        passwordChecks.hasSign = true;
+      } else if (numbers.test(input.value) && !specialSigns.test(input.value)) {
+        spanErrorPassword.textContent = "Add a special sign.";
+        spanErrorPassword.classList.add("show");
+        passwordChecks.hasNumber = true;
+        passwordChecks.hasSign = false;
+      } else {
+        spanErrorPassword.textContent = "";
+        spanErrorPassword.classList.remove("show");
+        passwordChecks.hasNumber = true;
+        passwordChecks.hasSign = true;
+      }
+      console.log(passwordChecks);
+    }
+  }
+
+  if (input.id === "password-confirm") {
+    if (!input.validity.valid) {
+      spanErrorPasswordConfirm.textContent = "Enter valid password";
+      spanErrorPasswordConfirm.classList.add("show");
+    } else {
+      spanErrorPasswordConfirm.textContent = "";
+      spanErrorPasswordConfirm.classList.remove("show");
     }
   }
 };

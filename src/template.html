@@ -51,7 +51,14 @@
         <div class="container-password">
           <label class="label-password" for="password">
             <span class="span-description">Enter password:</span>
-            <input id="password" class="input-password" type="password" />
+            <input
+              id="password"
+              class="input-password"
+              type="password"
+              minlength="8"
+              maxlength="30"
+              required
+            />
           </label>
           <span id="error-password" class="span-error">Error password</span>
           <label class="label-password-confirm" for="password-confirm">
@@ -60,6 +67,8 @@
               id="password-confirm"
               class="input-password-confirm"
               type="password"
+              minlength="8"
+              maxlength="30"
               required
             />
           </label>

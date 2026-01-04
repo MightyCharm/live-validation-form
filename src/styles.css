@@ -24,6 +24,14 @@ body {
   padding: 0.2rem;
 }
 
+.input-email:user-invalid,
+.select-country:user-invalid,
+.input-postal-code:user-invalid,
+.input-password:user-invalid,
+.input-password-confirm:user-invalid {
+  border: 2px solid red;
+}
+
 .main-container {
   display: flex;
   justify-content: center;
