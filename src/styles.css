@@ -117,6 +117,7 @@ form {
 }
 
 .span-error {
+  min-height: 20px;
   visibility: hidden;
   color: red;
 }

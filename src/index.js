@@ -7,6 +7,7 @@ const inputPassword = document.getElementById("password");
 const inputPasswordConfirm = document.getElementById("password-confirm");
 
 const spanErrorEmail = document.getElementById("error-email");
+const spanErrorCountry = document.getElementById("error-country");
 
 inputEmail.addEventListener("input", () => {
   console.log("input email");
@@ -20,7 +21,13 @@ inputEmail.addEventListener("blur", () => {
 });
 
 selectCountry.addEventListener("change", () => {
-  console.log("select country");
+  console.log("change select-country");
+  validateInput(selectCountry);
+});
+
+selectCountry.addEventListener("blur", () => {
+  console.log("blur select-country");
+  validateInput(selectCountry);
 });
 
 inputPostalCode.addEventListener("input", () => {
@@ -36,15 +43,30 @@ inputPasswordConfirm.addEventListener("input", () => {
 });
 
 const validateInput = (input) => {
-  if (!input.validity.valid) {
-    if (input.value.length === 0) {
-      spanErrorEmail.textContent = "Enter an email address.";
+  console.log("validateInput");
+
+  if (input.id === "email") {
+    if (!input.validity.valid) {
+      if (input.value.length === 0) {
+        spanErrorEmail.textContent = "Enter an email address.";
+      } else {
+        spanErrorEmail.textContent = "Enter a valid email address.";
+      }
+      spanErrorEmail.classList.add("show");
     } else {
-      spanErrorEmail.textContent = "Enter a valid email address.";
+      spanErrorEmail.textContent = "";
+      spanErrorEmail.classList.remove("show");
     }
-    spanErrorEmail.classList.add("show");
-  } else {
-    spanErrorEmail.textContent = "";
-    spanErrorEmail.classList.remove("show");
+    return;
+  }
+
+  if (input.id === "country") {
+    if (!input.validity.valid) {
+      spanErrorCountry.textContent = "Please select a country";
+      spanErrorCountry.classList.add("show");
+    } else {
+      spanErrorCountry.textContent = "";
+      spanErrorCountry.classList.remove("show");
+    }
   }
 };
