@@ -8,6 +8,17 @@ const inputPasswordConfirm = document.getElementById("password-confirm");
 
 const spanErrorEmail = document.getElementById("error-email");
 const spanErrorCountry = document.getElementById("error-country");
+const spanErrorPostal = document.getElementById("error-postal-code");
+
+const regexPostal = {
+  germany: /^\d{5}$/,
+  france: /^\d{5}$/,
+  us: /^\d{5}(?:-\d{4})?$/,
+  canada: /^[A-Z]\d[A-Z] \d[A-Z]\d$/,
+  uk: /^[A-Z]{1,2}\d[A-Z\d]?\s?\d[A-Z]{2}$/,
+  netherlands: /^\d{4} ?[A-Z]{2}$/,
+  sweden: /^S-\d{3} ?\d{2}$/,
+};
 
 inputEmail.addEventListener("input", () => {
   console.log("input email");
@@ -32,6 +43,12 @@ selectCountry.addEventListener("blur", () => {
 
 inputPostalCode.addEventListener("input", () => {
   console.log("input postal code");
+  validateInput(inputPostalCode);
+});
+
+inputPostalCode.addEventListener("blur", () => {
+  console.log("blur postal code");
+  validateInput(inputPostalCode);
 });
 
 inputPassword.addEventListener("input", () => {
@@ -62,11 +79,43 @@ const validateInput = (input) => {
 
   if (input.id === "country") {
     if (!input.validity.valid) {
-      spanErrorCountry.textContent = "Please select a country";
+      spanErrorCountry.textContent = "Please select a country.";
       spanErrorCountry.classList.add("show");
     } else {
       spanErrorCountry.textContent = "";
       spanErrorCountry.classList.remove("show");
+      spanErrorPostal.textContent = "";
+      spanErrorPostal.classList.remove("show");
+    }
+    return;
+  }
+
+  if (input.id === "postal-code") {
+    console.log("postal code ma boi");
+    const countrySelected = selectCountry.value;
+    console.log(countrySelected);
+    if (countrySelected === "") {
+      spanErrorPostal.textContent = "Select a Country first.";
+      spanErrorPostal.classList.add("show");
+      return;
+    }
+
+    if (input.value.length === 0) {
+      spanErrorPostal.textContent = "Enter n postal code.";
+      spanErrorPostal.classList.add("show");
+      return;
+    }
+    console.log(regexPostal[countrySelected]);
+
+    const pattern = regexPostal[countrySelected];
+    if (pattern && !pattern.test(input.value)) {
+      console.log("wrong");
+      spanErrorPostal.textContent = "Enter valid postal code.";
+      spanErrorPostal.classList.add("show");
+    } else {
+      console.log("right");
+      spanErrorPostal.textContent = "";
+      spanErrorPostal.classList.remove("show");
     }
   }
 };
