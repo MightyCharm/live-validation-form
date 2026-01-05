@@ -24,12 +24,29 @@ body {
   padding: 0.2rem;
 }
 
+.input-email,
+.select-country,
+.input-postal-code,
+.input-password,
+.input-password-confirm {
+  border: 1px solid black;
+  border-radius: 2px;
+}
+
 .input-email:user-invalid,
 .select-country:user-invalid,
 .input-postal-code:user-invalid,
 .input-password:user-invalid,
 .input-password-confirm:user-invalid {
-  border: 2px solid red;
+  border: 1px solid red;
+}
+
+.input-email:user-valid,
+.select-country:user-valid,
+.input-postal-code:user-valid,
+.input-password:user-valid,
+.input-password-confirm:user-valid {
+  border: 1px solid green;
 }
 
 .main-container {
@@ -112,6 +129,14 @@ form {
   /* border: 1px solid red; */
 }
 
+.container-submit {
+  /* text-align: center; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
 .btn-submit {
   padding: 0.5rem;
   border: none;
@@ -124,10 +149,19 @@ form {
   background-color: deeppink;
 }
 
-.span-error {
+.span-error,
+.span-success {
   min-height: 20px;
   visibility: hidden;
+}
+
+.span-error {
   color: red;
+}
+
+.span-success {
+  color: green;
+  visibility: visible;
 }
 
 .show {

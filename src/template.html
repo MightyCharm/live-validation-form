@@ -43,9 +43,7 @@
               required
             />
           </label>
-          <span id="error-postal-code" class="span-error"
-            >Error postal code</span
-          >
+          <span id="error-postal-code" class="span-error"></span>
         </div>
 
         <div class="container-password">
@@ -60,7 +58,7 @@
               required
             />
           </label>
-          <span id="error-password" class="span-error">Error password</span>
+          <span id="error-password" class="span-error"></span>
           <label class="label-password-confirm" for="password-confirm">
             <span class="span-description">Confirm password:</span>
             <input
@@ -72,12 +70,14 @@
               required
             />
           </label>
-          <span id="error-confirm-password" class="span-error"
-            >Error confirm password</span
-          >
+          <span id="error-confirm-password" class="span-error"></span>
         </div>
-
-        <button id="submit" class="btn-submit" type="submit">Submit</button>
+        <div class="container-submit">
+          <button id="submit-btn" class="btn-submit" type="submit">
+            Submit
+          </button>
+          <span id="success" class="span-success"></span>
+        </div>
       </form>
     </div>
   </body>

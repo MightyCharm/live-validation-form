@@ -13,6 +13,7 @@ const spanErrorPassword = document.getElementById("error-password");
 const spanErrorPasswordConfirm = document.getElementById(
   "error-confirm-password",
 );
+const spanSuccess = document.getElementById("success");
 
 const form = document.getElementById("form");
 
@@ -36,58 +37,49 @@ const passwordChecks = {
 };
 
 inputEmail.addEventListener("input", () => {
-  console.log("input email");
   console.log(inputEmail.validity.valid);
   validateInput(inputEmail);
 });
 
 inputEmail.addEventListener("blur", () => {
-  console.log("blur email");
   validateInput(inputEmail);
 });
 
 selectCountry.addEventListener("change", () => {
-  console.log("change select-country");
   validateInput(selectCountry);
 });
 
 selectCountry.addEventListener("blur", () => {
-  console.log("blur select-country");
   validateInput(selectCountry);
 });
 
 inputPostalCode.addEventListener("input", () => {
-  console.log("input postal code");
   validateInput(inputPostalCode);
 });
 
 inputPostalCode.addEventListener("blur", () => {
-  console.log("blur postal code");
   validateInput(inputPostalCode);
 });
 
 inputPassword.addEventListener("input", () => {
-  console.log("input password");
   validateInput(inputPassword);
 });
 
 inputPassword.addEventListener("blur", () => {
-  console.log("blur password");
   validateInput(inputPassword);
 });
 
 inputPasswordConfirm.addEventListener("input", () => {
-  console.log("input password confirm");
   validateInput(inputPasswordConfirm);
 });
 
 inputPasswordConfirm.addEventListener("blur", () => {
-  console.log("blur password confirm");
   validateInput(inputPasswordConfirm);
 });
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
+  console.log(form);
   validateForm(form);
 });
 
@@ -212,6 +204,10 @@ const validateForm = (form) => {
     passwordChecks.hasSign &&
     passwordChecks.passwordsMatch
   ) {
-    console.log("HIGH FIVE!");
+    spanSuccess.textContent = "HIGH FIVE";
+    spanSuccess.classList.add("show");
+    setTimeout(() => {
+      form.submit();
+    }, 3000);
   }
 };
