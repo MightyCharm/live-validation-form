@@ -14,6 +14,8 @@ const spanErrorPasswordConfirm = document.getElementById(
   "error-confirm-password",
 );
 
+const form = document.getElementById("form");
+
 const regexPostal = {
   germany: /^\d{5}$/,
   france: /^\d{5}$/,
@@ -84,6 +86,11 @@ inputPasswordConfirm.addEventListener("blur", () => {
   validateInput(inputPasswordConfirm);
 });
 
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  validateForm(form);
+});
+
 const validateInput = (input) => {
   if (input.id === "email") {
     if (!input.validity.valid) {
@@ -124,7 +131,7 @@ const validateInput = (input) => {
     }
 
     if (input.value.length === 0) {
-      spanErrorPostal.textContent = "Enter n postal code.";
+      spanErrorPostal.textContent = "Enter valid postal code.";
       spanErrorPostal.classList.add("show");
       return;
     }
@@ -190,5 +197,21 @@ const validateInput = (input) => {
       }
     }
     console.log(passwordChecks);
+  }
+};
+
+const validateForm = (form) => {
+  const inputFields = document.querySelectorAll("input, select");
+  inputFields.forEach((input) => {
+    validateInput(input);
+  });
+
+  if (
+    form.checkValidity() &&
+    passwordChecks.hasNumber &&
+    passwordChecks.hasSign &&
+    passwordChecks.passwordsMatch
+  ) {
+    console.log("HIGH FIVE!");
   }
 };
