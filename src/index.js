@@ -104,6 +104,7 @@ const validateInput = (input) => {
       spanErrorCountry.textContent = "Please select a country.";
       spanErrorCountry.classList.add("show");
     } else {
+      inputPostalCode.value = "";
       spanErrorCountry.textContent = "";
       spanErrorCountry.classList.remove("show");
       spanErrorPostal.textContent = "";
