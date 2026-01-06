@@ -36,45 +36,51 @@ const passwordChecks = {
   passwordsMatch: false,
 };
 
-inputEmail.addEventListener("input", () => {
-  console.log(inputEmail.validity.valid);
-  validateInput(inputEmail);
+const messages = {
+  email: {
+    empty: "Email is required.",
+    invalid: "Enter a valid email.",
+  },
+  country: {
+    invalid: "Country is required.",
+  },
+  postal: {
+    country: "Select a country first.",
+    empty: "Postal code is required.",
+    invalid: "Enter a valid postal code.",
+  },
+  password: {
+    invalid: "Enter a valid password.",
+    numSign: "Use a number and special character.",
+    number: "Number is required.",
+    sign: "Special character is required.",
+  },
+  passwordConfirm: {
+    nomatch: "Passwords don't match.",
+    invalid: "Enter a valid password.",
+  },
+  success: {
+    submit: "High Five!",
+  },
+};
+
+document.querySelectorAll("input").forEach((input) => {
+  console.log(input);
+  input.addEventListener("input", () => {
+    validateInput(input);
+  });
+  input.addEventListener("blur", () => {
+    validateInput(input);
+  });
 });
 
-inputEmail.addEventListener("blur", () => {
-  validateInput(inputEmail);
-});
-
-selectCountry.addEventListener("change", () => {
+selectCountry.addEventListener("input", () => {
+  inputPostalCode.value = ""; // clear postal code input if country value changes
   validateInput(selectCountry);
 });
 
 selectCountry.addEventListener("blur", () => {
   validateInput(selectCountry);
-});
-
-inputPostalCode.addEventListener("input", () => {
-  validateInput(inputPostalCode);
-});
-
-inputPostalCode.addEventListener("blur", () => {
-  validateInput(inputPostalCode);
-});
-
-inputPassword.addEventListener("input", () => {
-  validateInput(inputPassword);
-});
-
-inputPassword.addEventListener("blur", () => {
-  validateInput(inputPassword);
-});
-
-inputPasswordConfirm.addEventListener("input", () => {
-  validateInput(inputPasswordConfirm);
-});
-
-inputPasswordConfirm.addEventListener("blur", () => {
-  validateInput(inputPasswordConfirm);
 });
 
 form.addEventListener("submit", (e) => {
@@ -87,9 +93,9 @@ const validateInput = (input) => {
   if (input.id === "email") {
     if (!input.validity.valid) {
       if (input.value.length === 0) {
-        spanErrorEmail.textContent = "Enter an email address.";
+        spanErrorEmail.textContent = messages.email.empty;
       } else {
-        spanErrorEmail.textContent = "Enter a valid email address.";
+        spanErrorEmail.textContent = messages.email.invalid;
       }
       spanErrorEmail.classList.add("show");
     } else {
@@ -101,10 +107,10 @@ const validateInput = (input) => {
 
   if (input.id === "country") {
     if (!input.validity.valid) {
-      spanErrorCountry.textContent = "Please select a country.";
+      spanErrorCountry.textContent = messages.country.invalid;
       spanErrorCountry.classList.add("show");
     } else {
-      inputPostalCode.value = "";
+      // inputPostalCode.value = "";
       spanErrorCountry.textContent = "";
       spanErrorCountry.classList.remove("show");
       spanErrorPostal.textContent = "";
@@ -114,26 +120,23 @@ const validateInput = (input) => {
   }
 
   if (input.id === "postal-code") {
-    console.log("postal code ma boi");
     const countrySelected = selectCountry.value;
     console.log(countrySelected);
     if (countrySelected === "") {
-      spanErrorPostal.textContent = "Select a Country first.";
+      spanErrorPostal.textContent = messages.postal.country;
       spanErrorPostal.classList.add("show");
       return;
     }
 
     if (input.value.length === 0) {
-      spanErrorPostal.textContent = "Enter valid postal code.";
+      spanErrorPostal.textContent = messages.postal.empty;
       spanErrorPostal.classList.add("show");
       return;
     }
-    console.log(regexPostal[countrySelected]);
 
     const pattern = regexPostal[countrySelected];
     if (pattern && !pattern.test(input.value)) {
-      console.log("wrong");
-      spanErrorPostal.textContent = "Enter valid postal code.";
+      spanErrorPostal.textContent = messages.postal.invalid;
       spanErrorPostal.classList.add("show");
     } else {
       console.log("right");
@@ -145,21 +148,21 @@ const validateInput = (input) => {
 
   if (input.id === "password") {
     if (!input.validity.valid) {
-      spanErrorPassword.textContent = "Enter valid password.";
+      spanErrorPassword.textContent = messages.password.invalid;
       spanErrorPassword.classList.add("show");
     } else {
       if (!numbers.test(input.value) && !specialSigns.test(input.value)) {
-        spanErrorPassword.textContent = "Add a number and special sign.";
+        spanErrorPassword.textContent = messages.password.numSign;
         spanErrorPassword.classList.add("show");
         passwordChecks.hasNumber = false;
         passwordChecks.hasSign = false;
       } else if (!numbers.test(input.value) && specialSigns.test(input.value)) {
-        spanErrorPassword.textContent = "Add a number.";
+        spanErrorPassword.textContent = messages.password.number;
         spanErrorPassword.classList.add("show");
         passwordChecks.hasNumber = false;
         passwordChecks.hasSign = true;
       } else if (numbers.test(input.value) && !specialSigns.test(input.value)) {
-        spanErrorPassword.textContent = "Add a special sign.";
+        spanErrorPassword.textContent = messages.password.sign;
         spanErrorPassword.classList.add("show");
         passwordChecks.hasNumber = true;
         passwordChecks.hasSign = false;
@@ -177,12 +180,12 @@ const validateInput = (input) => {
     const firstPasswordValue = inputPassword.value;
     if (input.value !== firstPasswordValue) {
       passwordChecks.passwordsMatch = false;
-      spanErrorPasswordConfirm.textContent = "Password don't match.";
+      spanErrorPasswordConfirm.textContent = messages.passwordConfirm.nomatch;
       spanErrorPasswordConfirm.classList.add("show");
     } else {
       passwordChecks.passwordsMatch = true;
       if (!input.validity.valid) {
-        spanErrorPasswordConfirm.textContent = "Enter valid password";
+        spanErrorPasswordConfirm.textContent = messages.passwordConfirm.invalid;
         spanErrorPasswordConfirm.classList.add("show");
       } else {
         spanErrorPasswordConfirm.textContent = "";
@@ -205,7 +208,7 @@ const validateForm = (form) => {
     passwordChecks.hasSign &&
     passwordChecks.passwordsMatch
   ) {
-    spanSuccess.textContent = "HIGH FIVE";
+    spanSuccess.textContent = messages.success.submit;
     spanSuccess.classList.add("show");
     setTimeout(() => {
       form.submit();

@@ -62,12 +62,11 @@ body {
 
 form {
   display: grid;
-  /* grid-template-rows: 1fr 1fr 1fr 1fr 1fr; */
-  /* align-items: center; */
-  /* gap: 1rem; */
   padding: 1rem;
-  box-shadow: 2px 2px 5px black;
+
   border-radius: 4px;
+  min-width: 250px;
+  box-shadow: 2px 2px 5px black;
   border: 1px solid rgb(197, 197, 197);
 }
 
@@ -130,11 +129,10 @@ form {
 }
 
 .container-submit {
-  /* text-align: center; */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
 .btn-submit {
@@ -146,6 +144,7 @@ form {
 }
 
 .btn-submit:hover {
+  cursor: pointer;
   background-color: deeppink;
 }
 
@@ -153,6 +152,7 @@ form {
 .span-success {
   min-height: 20px;
   visibility: hidden;
+  font-size: 0.8rem;
 }
 
 .span-error {
