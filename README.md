@@ -2,11 +2,11 @@
 
 Project: live-validation-form (The Odin Project: Form Validation with JavaScript, Javascript Course)
 
-## Description ℹ️
+## ℹ️ Description
 
 - A form with live validation for email, country, postal code, and password — built with vanilla JavaScript
 
-## Features ✅
+## ✅ Features
 
 - Live validation on input, blur, select
 - Country-specific postal code pattern
@@ -14,7 +14,7 @@ Project: live-validation-form (The Odin Project: Form Validation with JavaScript
 - Error messages in one object
 - DRY event listeners with loop
 
-## Tech Stack ⚙️
+## ⚙️ Tech Stack
 
 <p align="left">
   <img src="https://cdn.simpleicons.org/html5" width="40" alt="HTML" />
@@ -24,18 +24,18 @@ Project: live-validation-form (The Odin Project: Form Validation with JavaScript
   <img src="https://cdn.simpleicons.org/npm" width="40" alt="npm" />
 </p>
 
-## Live Demo 🖥️
+## 🖥️ Live Demo
 
 ## Screenshot
 
-## Setup 🔧
+## 🔧 Setup
 
 1. Clone the repo
 2. Run `npm install`
 3. Run `npm run dev`
 4. Open `http://localhost:8080`
 
-## Deploy 🚀
+## 🚀 Deploy
 
 - `git checkout gh-pages && git merge main --no-edit`
 - `npm run build`
