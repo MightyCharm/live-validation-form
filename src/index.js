@@ -24,10 +24,10 @@ const regexPostal = {
   canada: /^[A-Z]\d[A-Z] \d[A-Z]\d$/,
   uk: /^[A-Z]{1,2}\d[A-Z\d]?\s?\d[A-Z]{2}$/,
   netherlands: /^\d{4} ?[A-Z]{2}$/,
-  sweden: /^S-\d{3} ?\d{2}$/,
+  sweden: /^S?-?\d{3} ?\d{2}$/,
 };
 
-const specialSigns = /[!@#$%^&*]/;
+const specialSigns = /[-!+@#$%^&*]/;
 const numbers = /\d/;
 
 const passwordChecks = {
@@ -50,6 +50,7 @@ const messages = {
     invalid: "Enter a valid postal code.",
   },
   password: {
+    tooShort: "Password must be at least 8 characters.",
     invalid: "Enter a valid password.",
     numSign: "Use a number and special character.",
     number: "Number is required.",
@@ -65,7 +66,6 @@ const messages = {
 };
 
 document.querySelectorAll("input").forEach((input) => {
-  console.log(input);
   input.addEventListener("input", () => {
     validateInput(input);
   });
@@ -85,7 +85,6 @@ selectCountry.addEventListener("blur", () => {
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  console.log(form);
   validateForm(form);
 });
 
@@ -97,8 +96,12 @@ const validateInput = (input) => {
       } else {
         spanErrorEmail.textContent = messages.email.invalid;
       }
+      input.classList.add("input-error");
+      input.classList.remove("input-success");
       spanErrorEmail.classList.add("show");
     } else {
+      input.classList.add("input-success");
+      input.classList.remove("input-error");
       spanErrorEmail.textContent = "";
       spanErrorEmail.classList.remove("show");
     }
@@ -109,19 +112,28 @@ const validateInput = (input) => {
     if (!input.validity.valid) {
       spanErrorCountry.textContent = messages.country.invalid;
       spanErrorCountry.classList.add("show");
+      selectCountry.classList.add("input-error");
+      selectCountry.classList.remove("input-success");
     } else {
       // inputPostalCode.value = "";
       spanErrorCountry.textContent = "";
       spanErrorCountry.classList.remove("show");
       spanErrorPostal.textContent = "";
       spanErrorPostal.classList.remove("show");
+      selectCountry.classList.add("input-success");
+      selectCountry.classList.remove("input-error");
+
+      const pattern = regexPostal[input.value];
+      if (pattern) {
+        inputPostalCode.pattern = pattern.source;
+      }
+      inputPostalCode.dispatchEvent(new Event("input"));
     }
     return;
   }
 
   if (input.id === "postal-code") {
     const countrySelected = selectCountry.value;
-    console.log(countrySelected);
     if (countrySelected === "") {
       spanErrorPostal.textContent = messages.postal.country;
       spanErrorPostal.classList.add("show");
@@ -129,6 +141,8 @@ const validateInput = (input) => {
     }
 
     if (input.value.length === 0) {
+      input.classList.add("input-error");
+      input.classList.remove("input-success");
       spanErrorPostal.textContent = messages.postal.empty;
       spanErrorPostal.classList.add("show");
       return;
@@ -136,10 +150,14 @@ const validateInput = (input) => {
 
     const pattern = regexPostal[countrySelected];
     if (pattern && !pattern.test(input.value)) {
+      input.classList.add("input-error");
+      input.classList.remove("input-success");
       spanErrorPostal.textContent = messages.postal.invalid;
       spanErrorPostal.classList.add("show");
     } else {
-      console.log("right");
+      // input is correct
+      input.classList.add("input-success");
+      input.classList.remove("input-error");
       spanErrorPostal.textContent = "";
       spanErrorPostal.classList.remove("show");
     }
@@ -148,51 +166,71 @@ const validateInput = (input) => {
 
   if (input.id === "password") {
     if (!input.validity.valid) {
+      input.classList.add("input-error");
+      input.classList.remove("input-success");
       spanErrorPassword.textContent = messages.password.invalid;
       spanErrorPassword.classList.add("show");
+      if (input.validity.tooShort) {
+        input.classList.add("input-error");
+        input.classList.remove("input-success");
+        spanErrorPassword.textContent = messages.password.tooShort;
+        spanErrorPassword.classList.add("show");
+      }
     } else {
       if (!numbers.test(input.value) && !specialSigns.test(input.value)) {
+        input.classList.add("input-error");
+        input.classList.remove("input-success");
         spanErrorPassword.textContent = messages.password.numSign;
         spanErrorPassword.classList.add("show");
         passwordChecks.hasNumber = false;
         passwordChecks.hasSign = false;
       } else if (!numbers.test(input.value) && specialSigns.test(input.value)) {
+        input.classList.add("input-error");
+        input.classList.remove("input-success");
         spanErrorPassword.textContent = messages.password.number;
         spanErrorPassword.classList.add("show");
         passwordChecks.hasNumber = false;
         passwordChecks.hasSign = true;
       } else if (numbers.test(input.value) && !specialSigns.test(input.value)) {
+        input.classList.add("input-error");
+        input.classList.remove("input-success");
         spanErrorPassword.textContent = messages.password.sign;
         spanErrorPassword.classList.add("show");
         passwordChecks.hasNumber = true;
         passwordChecks.hasSign = false;
       } else {
+        input.classList.add("input-success");
+        input.classList.remove("input-error");
         spanErrorPassword.textContent = "";
         spanErrorPassword.classList.remove("show");
         passwordChecks.hasNumber = true;
         passwordChecks.hasSign = true;
       }
-      console.log(passwordChecks);
     }
   }
 
   if (input.id === "password-confirm") {
     const firstPasswordValue = inputPassword.value;
     if (input.value !== firstPasswordValue) {
+      input.classList.add("input-error");
+      input.classList.remove("input-success");
       passwordChecks.passwordsMatch = false;
       spanErrorPasswordConfirm.textContent = messages.passwordConfirm.nomatch;
       spanErrorPasswordConfirm.classList.add("show");
     } else {
       passwordChecks.passwordsMatch = true;
       if (!input.validity.valid) {
+        input.classList.add("input-error");
+        input.classList.remove("input-success");
         spanErrorPasswordConfirm.textContent = messages.passwordConfirm.invalid;
         spanErrorPasswordConfirm.classList.add("show");
       } else {
+        input.classList.add("input-success");
+        input.classList.remove("input-error");
         spanErrorPasswordConfirm.textContent = "";
         spanErrorPasswordConfirm.classList.remove("show");
       }
     }
-    console.log(passwordChecks);
   }
 };
 

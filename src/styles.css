@@ -33,7 +33,15 @@ body {
   border-radius: 2px;
 }
 
-.input-email:user-invalid,
+.input-email:focus,
+.select-country:focus,
+.input-postal-code:focus,
+.input-password:focus,
+.input-password-confirm:focus {
+  outline: none;
+}
+
+/* .input-email:user-invalid,
 .select-country:user-invalid,
 .input-postal-code:user-invalid,
 .input-password:user-invalid,
@@ -47,7 +55,7 @@ body {
 .input-password:user-valid,
 .input-password-confirm:user-valid {
   border: 1px solid green;
-}
+} */
 
 .main-container {
   display: flex;
@@ -162,6 +170,14 @@ form {
 .span-success {
   color: green;
   visibility: visible;
+}
+
+.input-error {
+  border: 1px solid red;
+}
+
+.input-success {
+  border: 1px solid green;
 }
 
 .show {
