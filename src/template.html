@@ -7,19 +7,35 @@
   </head>
   <body>
     <div class="main-container">
-      <form id="form" novalidate>
+      <form id="form" aria-labelledby="form-title" novalidate>
+        <h1 id="form-title" class="form-header">Sign Up</h1>
         <div class="container-email">
           <label class="label-email" for="email">
             <span>Email</span>
-            <input id="email" class="input-email" type="email" required />
+            <input
+              id="email"
+              class="input-email"
+              type="email"
+              autocomplete="email"
+              aria-describedby="error-email"
+              aria-invalid="false"
+              required
+            />
           </label>
-          <span id="error-email" class="span-error"></span>
+          <span id="error-email" class="span-error" aria-live="polite"></span>
         </div>
 
         <div class="container-country">
           <label class="label-country" for="country">
             <span class="span-description">Country</span>
-            <select id="country" class="select-country" required>
+            <select
+              id="country"
+              class="select-country"
+              autocomplete="country"
+              aria-describedby="error-country"
+              aria-invalid="false"
+              required
+            >
               <option value="">Select Country</option>
               <option value="germany">Germany</option>
               <option value="france">France</option>
@@ -30,7 +46,7 @@
               <option value="sweden">Sweden</option>
             </select>
           </label>
-          <span id="error-country" class="span-error"></span>
+          <span id="error-country" class="span-error" aria-live="polite"></span>
         </div>
 
         <div class="container-postal-code">
@@ -40,10 +56,17 @@
               id="postal-code"
               class="input-postal-code"
               type="text"
+              autocomplete="postal-code"
+              aria-describedby="error-postal-code"
+              aria-invalid="false"
               required
             />
           </label>
-          <span id="error-postal-code" class="span-error"></span>
+          <span
+            id="error-postal-code"
+            class="span-error"
+            aria-live="polite"
+          ></span>
         </div>
 
         <div class="container-password">
@@ -55,10 +78,17 @@
               type="password"
               minlength="8"
               maxlength="30"
+              autocomplete="new-password"
+              aria-describedby="error-password"
+              aria-invalid="false"
               required
             />
           </label>
-          <span id="error-password" class="span-error"></span>
+          <span
+            id="error-password"
+            class="span-error"
+            aria-live="polite"
+          ></span>
           <label class="label-password-confirm" for="password-confirm">
             <span class="span-description">Confirm Password</span>
             <input
@@ -67,10 +97,17 @@
               type="password"
               minlength="8"
               maxlength="30"
+              autocomplete="new-password"
+              aria-describedby="error-confirm-password"
+              aria-invalid="false"
               required
             />
           </label>
-          <span id="error-confirm-password" class="span-error"></span>
+          <span
+            id="error-confirm-password"
+            class="span-error"
+            aria-live="polite"
+          ></span>
         </div>
         <div class="container-submit">
           <button id="submit-btn" class="btn-submit" type="submit">

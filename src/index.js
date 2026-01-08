@@ -99,11 +99,19 @@ const validateInput = (input) => {
       input.classList.add("input-error");
       input.classList.remove("input-success");
       spanErrorEmail.classList.add("show");
+      input.setAttribute("aria-invalid", "true");
+      console.log(
+        document.getElementById("email").getAttribute("aria-invalid"),
+      );
     } else {
       input.classList.add("input-success");
       input.classList.remove("input-error");
       spanErrorEmail.textContent = "";
       spanErrorEmail.classList.remove("show");
+      input.setAttribute("aria-invalid", "false");
+      console.log(
+        document.getElementById("email").getAttribute("aria-invalid"),
+      );
     }
     return;
   }
@@ -114,6 +122,10 @@ const validateInput = (input) => {
       spanErrorCountry.classList.add("show");
       selectCountry.classList.add("input-error");
       selectCountry.classList.remove("input-success");
+      input.setAttribute("aria-invalid", "true");
+      console.log(
+        document.getElementById("country").getAttribute("aria-invalid"),
+      );
     } else {
       // inputPostalCode.value = "";
       spanErrorCountry.textContent = "";
@@ -122,6 +134,10 @@ const validateInput = (input) => {
       spanErrorPostal.classList.remove("show");
       selectCountry.classList.add("input-success");
       selectCountry.classList.remove("input-error");
+      input.setAttribute("aria-invalid", "false");
+      console.log(
+        document.getElementById("country").getAttribute("aria-invalid"),
+      );
 
       const pattern = regexPostal[input.value];
       if (pattern) {
@@ -137,6 +153,10 @@ const validateInput = (input) => {
     if (countrySelected === "") {
       spanErrorPostal.textContent = messages.postal.country;
       spanErrorPostal.classList.add("show");
+      input.setAttribute("aria-invalid", "true");
+      console.log(
+        document.getElementById("postal-code").getAttribute("aria-invalid"),
+      );
       return;
     }
 
@@ -145,6 +165,10 @@ const validateInput = (input) => {
       input.classList.remove("input-success");
       spanErrorPostal.textContent = messages.postal.empty;
       spanErrorPostal.classList.add("show");
+      input.setAttribute("aria-invalid", "true");
+      console.log(
+        document.getElementById("postal-code").getAttribute("aria-invalid"),
+      );
       return;
     }
 
@@ -154,58 +178,78 @@ const validateInput = (input) => {
       input.classList.remove("input-success");
       spanErrorPostal.textContent = messages.postal.invalid;
       spanErrorPostal.classList.add("show");
+      input.setAttribute("aria-invalid", "true");
+      console.log(
+        document.getElementById("postal-code").getAttribute("aria-invalid"),
+      );
     } else {
       // input is correct
       input.classList.add("input-success");
       input.classList.remove("input-error");
       spanErrorPostal.textContent = "";
       spanErrorPostal.classList.remove("show");
+      input.setAttribute("aria-invalid", "false");
+      console.log(
+        document.getElementById("postal-code").getAttribute("aria-invalid"),
+      );
     }
     return;
   }
 
   if (input.id === "password") {
-    if (!input.validity.valid) {
+    if (input.validity.tooShort) {
       input.classList.add("input-error");
       input.classList.remove("input-success");
-      spanErrorPassword.textContent = messages.password.invalid;
+      spanErrorPassword.textContent = messages.password.tooShort;
       spanErrorPassword.classList.add("show");
-      if (input.validity.tooShort) {
-        input.classList.add("input-error");
-        input.classList.remove("input-success");
-        spanErrorPassword.textContent = messages.password.tooShort;
-        spanErrorPassword.classList.add("show");
-      }
+      input.setAttribute("aria-invalid", "true");
+      console.log(
+        document.getElementById("password").getAttribute("aria-invalid"),
+      );
+    } else if (!numbers.test(input.value) && !specialSigns.test(input.value)) {
+      input.classList.add("input-error");
+      input.classList.remove("input-success");
+      spanErrorPassword.textContent = messages.password.numSign;
+      spanErrorPassword.classList.add("show");
+      passwordChecks.hasNumber = false;
+      passwordChecks.hasSign = false;
+      input.setAttribute("aria-invalid", "true");
+      console.log(
+        document.getElementById("password").getAttribute("aria-invalid"),
+      );
+    } else if (!numbers.test(input.value) && specialSigns.test(input.value)) {
+      input.classList.add("input-error");
+      input.classList.remove("input-success");
+      spanErrorPassword.textContent = messages.password.number;
+      spanErrorPassword.classList.add("show");
+      passwordChecks.hasNumber = false;
+      passwordChecks.hasSign = true;
+      input.setAttribute("aria-invalid", "true");
+      console.log(
+        document.getElementById("password").getAttribute("aria-invalid"),
+      );
+    } else if (numbers.test(input.value) && !specialSigns.test(input.value)) {
+      input.classList.add("input-error");
+      input.classList.remove("input-success");
+      spanErrorPassword.textContent = messages.password.sign;
+      spanErrorPassword.classList.add("show");
+      passwordChecks.hasNumber = true;
+      passwordChecks.hasSign = false;
+      input.setAttribute("aria-invalid", "true");
+      console.log(
+        document.getElementById("password").getAttribute("aria-invalid"),
+      );
     } else {
-      if (!numbers.test(input.value) && !specialSigns.test(input.value)) {
-        input.classList.add("input-error");
-        input.classList.remove("input-success");
-        spanErrorPassword.textContent = messages.password.numSign;
-        spanErrorPassword.classList.add("show");
-        passwordChecks.hasNumber = false;
-        passwordChecks.hasSign = false;
-      } else if (!numbers.test(input.value) && specialSigns.test(input.value)) {
-        input.classList.add("input-error");
-        input.classList.remove("input-success");
-        spanErrorPassword.textContent = messages.password.number;
-        spanErrorPassword.classList.add("show");
-        passwordChecks.hasNumber = false;
-        passwordChecks.hasSign = true;
-      } else if (numbers.test(input.value) && !specialSigns.test(input.value)) {
-        input.classList.add("input-error");
-        input.classList.remove("input-success");
-        spanErrorPassword.textContent = messages.password.sign;
-        spanErrorPassword.classList.add("show");
-        passwordChecks.hasNumber = true;
-        passwordChecks.hasSign = false;
-      } else {
-        input.classList.add("input-success");
-        input.classList.remove("input-error");
-        spanErrorPassword.textContent = "";
-        spanErrorPassword.classList.remove("show");
-        passwordChecks.hasNumber = true;
-        passwordChecks.hasSign = true;
-      }
+      input.classList.add("input-success");
+      input.classList.remove("input-error");
+      spanErrorPassword.textContent = "";
+      spanErrorPassword.classList.remove("show");
+      passwordChecks.hasNumber = true;
+      passwordChecks.hasSign = true;
+      input.setAttribute("aria-invalid", "false");
+      console.log(
+        document.getElementById("password").getAttribute("aria-invalid"),
+      );
     }
   }
 
@@ -214,6 +258,12 @@ const validateInput = (input) => {
     if (input.value !== firstPasswordValue) {
       input.classList.add("input-error");
       input.classList.remove("input-success");
+      input.setAttribute("aria-invalid", "true");
+      console.log(
+        document
+          .getElementById("password-confirm")
+          .getAttribute("aria-invalid"),
+      );
       passwordChecks.passwordsMatch = false;
       spanErrorPasswordConfirm.textContent = messages.passwordConfirm.nomatch;
       spanErrorPasswordConfirm.classList.add("show");
@@ -222,11 +272,23 @@ const validateInput = (input) => {
       if (!input.validity.valid) {
         input.classList.add("input-error");
         input.classList.remove("input-success");
+        input.setAttribute("aria-invalid", "true");
+        console.log(
+          document
+            .getElementById("password-confirm")
+            .getAttribute("aria-invalid"),
+        );
         spanErrorPasswordConfirm.textContent = messages.passwordConfirm.invalid;
         spanErrorPasswordConfirm.classList.add("show");
       } else {
         input.classList.add("input-success");
         input.classList.remove("input-error");
+        input.setAttribute("aria-invalid", "false");
+        console.log(
+          document
+            .getElementById("password-confirm")
+            .getAttribute("aria-invalid"),
+        );
         spanErrorPasswordConfirm.textContent = "";
         spanErrorPasswordConfirm.classList.remove("show");
       }
