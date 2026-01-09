@@ -27,10 +27,12 @@ const regexPostal = {
   sweden: /^S?-?\d{3} ?\d{2}$/,
 };
 
-const specialSigns = /[-!+@#$%^&*]/;
-const numbers = /\d/;
+const specialSign = /[-!+@#$%^&*]/;
+const number = /\d/;
+const letter = /[a-zA-Z]/;
 
 const passwordChecks = {
+  hasLetter: false,
   hasNumber: false,
   hasSign: false,
   passwordsMatch: false,
@@ -50,9 +52,14 @@ const messages = {
     invalid: "Enter a valid postal code.",
   },
   password: {
+    valueMissing: "Password is required.",
     tooShort: "Password must be at least 8 characters.",
     invalid: "Enter a valid password.",
-    numSign: "Use a number and special character.",
+    letterNumSign: "Use letter, number and special character.",
+    numSign: "Use number an special character.",
+    letterSign: "Use letter an special character.",
+    letterNum: "Use letter and number.",
+    letter: "Letter is required.",
     number: "Number is required.",
     sign: "Special character is required.",
   },
@@ -127,7 +134,6 @@ const validateInput = (input) => {
         document.getElementById("country").getAttribute("aria-invalid"),
       );
     } else {
-      // inputPostalCode.value = "";
       spanErrorCountry.textContent = "";
       spanErrorCountry.classList.remove("show");
       spanErrorPostal.textContent = "";
@@ -197,7 +203,16 @@ const validateInput = (input) => {
   }
 
   if (input.id === "password") {
-    if (input.validity.tooShort) {
+    if (input.validity.valueMissing) {
+      input.classList.add("input-error");
+      input.classList.remove("input-success");
+      spanErrorPassword.textContent = messages.password.valueMissing;
+      spanErrorPassword.classList.add("show");
+      input.setAttribute("aria-invalid", "true");
+      console.log(
+        document.getElementById("password").getAttribute("aria-invalid"),
+      );
+    } else if (input.validity.tooShort) {
       input.classList.add("input-error");
       input.classList.remove("input-success");
       spanErrorPassword.textContent = messages.password.tooShort;
@@ -206,50 +221,58 @@ const validateInput = (input) => {
       console.log(
         document.getElementById("password").getAttribute("aria-invalid"),
       );
-    } else if (!numbers.test(input.value) && !specialSigns.test(input.value)) {
-      input.classList.add("input-error");
-      input.classList.remove("input-success");
-      spanErrorPassword.textContent = messages.password.numSign;
-      spanErrorPassword.classList.add("show");
-      passwordChecks.hasNumber = false;
-      passwordChecks.hasSign = false;
-      input.setAttribute("aria-invalid", "true");
-      console.log(
-        document.getElementById("password").getAttribute("aria-invalid"),
-      );
-    } else if (!numbers.test(input.value) && specialSigns.test(input.value)) {
-      input.classList.add("input-error");
-      input.classList.remove("input-success");
-      spanErrorPassword.textContent = messages.password.number;
-      spanErrorPassword.classList.add("show");
-      passwordChecks.hasNumber = false;
-      passwordChecks.hasSign = true;
-      input.setAttribute("aria-invalid", "true");
-      console.log(
-        document.getElementById("password").getAttribute("aria-invalid"),
-      );
-    } else if (numbers.test(input.value) && !specialSigns.test(input.value)) {
-      input.classList.add("input-error");
-      input.classList.remove("input-success");
-      spanErrorPassword.textContent = messages.password.sign;
-      spanErrorPassword.classList.add("show");
-      passwordChecks.hasNumber = true;
-      passwordChecks.hasSign = false;
-      input.setAttribute("aria-invalid", "true");
-      console.log(
-        document.getElementById("password").getAttribute("aria-invalid"),
-      );
     } else {
-      input.classList.add("input-success");
-      input.classList.remove("input-error");
-      spanErrorPassword.textContent = "";
-      spanErrorPassword.classList.remove("show");
-      passwordChecks.hasNumber = true;
-      passwordChecks.hasSign = true;
-      input.setAttribute("aria-invalid", "false");
+      const value = input.value;
+      let hasLetter = false;
+      let hasNumber = false;
+      let hasSign = false;
+
+      if (letter.test(value)) {
+        hasLetter = true;
+      }
+      if (number.test(value)) {
+        hasNumber = true;
+      }
+      if (specialSign.test(value)) {
+        hasSign = true;
+      }
+      passwordChecks.hasLetter = hasLetter;
+      passwordChecks.hasNumber = hasNumber;
+      passwordChecks.hasSign = hasSign;
+
+      if (!hasLetter || !hasNumber || !hasSign) {
+        input.classList.add("input-error");
+        input.classList.remove("input-success");
+        spanErrorPassword.classList.add("show");
+        input.setAttribute("aria-invalid", "true");
+      } else {
+        input.classList.add("input-success");
+        input.classList.remove("input-error");
+        spanErrorPassword.classList.remove("show");
+        input.setAttribute("aria-invalid", "false");
+      }
+
       console.log(
         document.getElementById("password").getAttribute("aria-invalid"),
       );
+
+      if (!hasLetter && !hasNumber && !hasSign) {
+        spanErrorPassword.textContent = messages.password.letterNumSign;
+      } else if (hasLetter && !hasNumber && !hasSign) {
+        spanErrorPassword.textContent = messages.password.numSign;
+      } else if (hasLetter && hasNumber && !hasSign) {
+        spanErrorPassword.textContent = messages.password.sign;
+      } else if (!hasLetter && hasNumber && !hasSign) {
+        spanErrorPassword.textContent = messages.password.letterSign;
+      } else if (!hasLetter && hasNumber && hasSign) {
+        spanErrorPassword.textContent = messages.password.letter;
+      } else if (!hasLetter && !hasNumber && hasSign) {
+        spanErrorPassword.textContent = messages.password.letterNum;
+      } else if (hasLetter && !hasNumber && hasSign) {
+        spanErrorPassword.textContent = messages.password.number;
+      } else {
+        console.log("success: letter | number | sign");
+      }
     }
   }
 
@@ -304,6 +327,7 @@ const validateForm = (form) => {
 
   if (
     form.checkValidity() &&
+    passwordChecks.hasLetter &&
     passwordChecks.hasNumber &&
     passwordChecks.hasSign &&
     passwordChecks.passwordsMatch
