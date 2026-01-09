@@ -28,7 +28,7 @@ Project: live-validation-form (The Odin Project: Form Validation with JavaScript
 
 [View Live Form](https://mightycharm.github.io/live-validation-form/)
 
-## Screenshot
+## 📸 Screenshots
 
 ![Form validation](assets/images/form-valid.png)
 ![Form validation](assets/images/form-error1.png)
