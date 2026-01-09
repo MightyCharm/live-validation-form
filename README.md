@@ -30,6 +30,10 @@ Project: live-validation-form (The Odin Project: Form Validation with JavaScript
 
 ## Screenshot
 
+![Form validation](assets/images/form-valid.png)
+![Form validation](assets/images/form-error1.png)
+![Form validation](assets/images/form-error2.png)
+
 ## 🔧 Setup
 
 1. Clone the repo
